@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 1) {
+if (!isset($_SESSION['role']) || ($_SESSION['role'] != 1 && $_SESSION['role'] != 2)) {
     header("Location: ../../View/form.php");
     exit();
 }
@@ -141,12 +141,12 @@ if (isset($_GET['edit_id'])) {
 <body>
 
 <div class="admin-container">
-    <h2 class="text-center main-title"><i class="fas fa-ice-cream"></i> Cửa Hàng Icedream</h2>
+    <h2 class="text-center main-title"><i class="fas fa-ice-cream"></i> Cửa Hàng Quần áo</h2>
 
     <div class="card card-form mb-5 <?= $edit_product ? 'editing' : '' ?>">
         <div class="card-header">
             <i class="fas <?= $edit_product ? 'fa-edit' : 'fa-plus-circle' ?>"></i>
-            <?= $edit_product ? 'CHỈNH SỬA SẢN PHẨM' : 'THÊM MÓN MỚI VÀO MENU' ?>
+            <?= $edit_product ? 'CHỈNH SỬA SẢN PHẨM' : 'THÊM MÓN SẢN PHẨM' ?>
         </div>
         <div class="card-body p-4">
             <form action="../controller/quanlysp.php?action=<?= $edit_product ? 'edit' : 'add' ?>" method="POST" enctype="multipart/form-data">
@@ -156,43 +156,50 @@ if (isset($_GET['edit_id'])) {
                 <?php endif; ?>
 
                 <div class="row">
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label">Tên món</label>
-                        <input type="text" name="name" class="form-control" value="<?= $edit_product ? htmlspecialchars($edit_product['name']) : '' ?>" placeholder="VD: Kem dâu tây..." required>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label">Giá bán (đ)</label>
-                        <input type="number" name="price" class="form-control" value="<?= $edit_product ? $edit_product['price'] : '' ?>" placeholder="0" required>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label">Loại sản phẩm</label>
-                        <select name="category" class="form-select">
-                            <option value="kem" <?= ($edit_product && $edit_product['category'] == 'kem') ? 'selected' : '' ?>>🍦 KEM</option>
-                            <option value="sinhto" <?= ($edit_product && $edit_product['category'] == 'sinhto') ? 'selected' : '' ?>>🍹 SINH TỐ</option>
-                            <option value="cafe" <?= ($edit_product && $edit_product['category'] == 'cafe') ? 'selected' : '' ?>>☕ CAFE</option>
-                        </select>
-                    </div>
-                    
-                    <div class="col-md-12 mb-3">
-                        <label class="form-label">Mô tả hương vị</label>
-                        <textarea name="description" class="form-control" rows="2" placeholder="Thơm ngon, béo ngậy..."><?= $edit_product ? htmlspecialchars($edit_product['description']) : '' ?></textarea>
-                    </div>
+    <div class="col-md-3 mb-3">
+        <label class="form-label">Tên sản phẩm</label>
+        <input type="text" name="name" class="form-control" value="<?= $edit_product ? htmlspecialchars($edit_product['name']) : '' ?>" placeholder="Ví dụ: Áo Sơ Mi Versace" required>
+    </div>
+    <div class="col-md-3 mb-3">
+        <label class="form-label">Giá bán (đ)</label>
+        <input type="number" name="price" class="form-control" value="<?= $edit_product ? $edit_product['price'] : '' ?>" placeholder="0" required>
+    </div>
+    <div class="col-md-3 mb-3">
+        <label class="form-label">Loại SP (Tự điền)</label>
+        <input type="text" name="category" class="form-control" value="<?= $edit_product ? htmlspecialchars($edit_product['category']) : '' ?>" placeholder="ao, quan, tui..." required>
+    </div>
+    <div class="col-md-3 mb-3">
+        <label class="form-label">Giới tính</label>
+        <select name="gender" class="form-select" required>
+            <option value="nam" <?= ($edit_product && $edit_product['gender'] == 'nam') ? 'selected' : '' ?>>Nam</option>
+            <option value="nu" <?= ($edit_product && $edit_product['gender'] == 'nu') ? 'selected' : '' ?>>Nữ</option>
+            <option value="unisex" <?= ($edit_product && $edit_product['gender'] == 'unisex') ? 'selected' : '' ?>>Unisex</option>
+        </select>
+    </div>
+    
+    <div class="col-md-12 mb-3">
+        <label class="form-label">Mô tả sản phẩm</label>
+        <textarea name="description" class="form-control" rows="2" placeholder="Nhập mô tả chi tiết sản phẩm..."><?= $edit_product ? htmlspecialchars($edit_product['description']) : '' ?></textarea>
+    </div>
 
-                    <div class="col-md-12 mb-4">
-                        <label class="form-label">Hình ảnh minh họa</label>
-                        <?php if ($edit_product): ?>
-                            <div class="mb-2"><img src="../../image/<?= $edit_product['image'] ?>" width="60" class="rounded shadow-sm"></div>
-                        <?php endif; ?>
-                        <input type="file" name="image" class="form-control" <?= $edit_product ? '' : 'required' ?>>
-                    </div>
-                </div>
+    <div class="col-md-12 mb-4">
+        <label class="form-label">Hình ảnh minh họa</label>
+        <?php if ($edit_product): ?>
+            <div class="mb-2">
+                <small class="text-muted">Ảnh hiện tại:</small><br>
+                <img src="../../image/<?= $edit_product['image'] ?>" width="60" class="rounded shadow-sm">
+            </div>
+        <?php endif; ?>
+        <input type="file" name="image" class="form-control" <?= $edit_product ? '' : 'required' ?>>
+    </div>
+</div>
 
                 <div class="d-flex justify-content-end gap-2">
                     <?php if ($edit_product): ?>
                         <a href="quanlysp.php" class="btn btn-secondary px-4 shadow-sm" style="border-radius: 10px;">HỦY BỎ</a>
                     <?php endif; ?>
                     <button type="submit" class="btn btn-pink px-5 shadow-sm">
-                        <?= $edit_product ? 'CẬP NHẬT NGAY' : 'THÊM VÀO MENU' ?>
+                        <?= $edit_product ? 'CẬP NHẬT NGAY' : 'THÊM VÀO' ?>
                     </button>
                 </div>
             </form>
@@ -201,45 +208,52 @@ if (isset($_GET['edit_id'])) {
 
     <div class="table-container shadow-sm bg-white">
         <table class="table mb-0">
-            <thead>
-                <tr>
-                    <th width="80">Mã</th>
-                    <th width="120">Hình ảnh</th>
-                    <th>Tên sản phẩm</th>
-                    <th>Giá tiền</th>
-                    <th>Phân loại</th>
-                    <th width="150">Thao tác</th>
-                </tr>
-            </thead>
+           <thead>
+    <tr>
+        <th width="80">Mã</th>
+        <th width="120">Hình ảnh</th>
+        <th>Tên sản phẩm</th>
+        <th>Giá tiền</th>
+        <th>Phân loại</th>
+        <th>Giới tính</th> <th width="150">Thao tác</th>
+    </tr>
+</thead>
             <tbody>
-                <?php
-                $result = $conn->query("SELECT * FROM products ORDER BY id DESC");
-                while($row = $result->fetch_assoc()):
-                ?>
-                <tr>
-                    <td><b class="text-muted">#<?= $row['id'] ?></b></td>
-                    <td><img src="../../image/<?= $row['image'] ?>" class="img-thumb"></td>
-                    <td>
-                        <div class="fw-bold"><?= htmlspecialchars($row['name']) ?></div>
-                        <small class="text-muted text-truncate d-inline-block" style="max-width: 200px;"><?= htmlspecialchars($row['description']) ?></small>
-                    </td>
-                    <td><span class="text-danger fw-bold"><?= number_format($row['price']) ?>đ</span></td>
-                    <td><span class="badge-cat text-uppercase"><?= $row['category'] ?></span></td>
-                    <td>
-                        <div class="action-btns">
-                            <a href="quanlysp.php?edit_id=<?= $row['id'] ?>" class="btn btn-sm btn-edit" title="Sửa">
-                                <i class="fas fa-pen-alt"></i>
-                            </a>
-                            <a href="../controller/quanlysp.php?action=delete&id=<?= $row['id'] ?>" 
-                               class="btn btn-sm btn-delete" 
-                               onclick="return confirm('Xóa món này khỏi menu?')" title="Xóa">
-                                <i class="fas fa-trash"></i>
-                            </a>
-                        </div>
-                    </td>
-                </tr>
-                <?php endwhile; ?>
-            </tbody>
+    <?php
+    $result = $conn->query("SELECT * FROM products ORDER BY id DESC");
+    while($row = $result->fetch_assoc()):
+    ?>
+    <tr>
+        <td><b class="text-muted">#<?= $row['id'] ?></b></td>
+        <td><img src="../../image/<?= $row['image'] ?>" class="img-thumb"></td>
+        <td>
+            <div class="fw-bold"><?= htmlspecialchars($row['name']) ?></div>
+            <small class="text-muted text-truncate d-inline-block" style="max-width: 200px;"><?= htmlspecialchars($row['description']) ?></small>
+        </td>
+        <td><span class="text-danger fw-bold"><?= number_format($row['price']) ?>đ</span></td>
+        <td><span class="badge-cat text-uppercase"><?= htmlspecialchars($row['category']) ?></span></td>
+        
+        <td>
+            <span class="badge bg-light text-dark border text-capitalize">
+                <?= htmlspecialchars($row['gender']) ?>
+            </span>
+        </td>
+
+        <td>
+            <div class="action-btns">
+                <a href="quanlysp.php?edit_id=<?= $row['id'] ?>" class="btn btn-sm btn-edit" title="Sửa">
+                    <i class="fas fa-pen-alt"></i>
+                </a>
+                <a href="../controller/quanlysp.php?action=delete&id=<?= $row['id'] ?>" 
+                   class="btn btn-sm btn-delete" 
+                   onclick="return confirm('Xóa món này khỏi menu?')" title="Xóa">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </div>
+        </td>
+    </tr>
+    <?php endwhile; ?>
+</tbody>
         </table>
     </div>
 

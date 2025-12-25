@@ -16,7 +16,7 @@ require_once '../Controller/sanpham.php';
             <a href="sanpham.php" class="cat-item <?= $cat == '' ? 'active' : '' ?>">
                 <i class="fas fa-border-all"></i> <span>TẤT CẢ</span>
             </a>
-            <a href="sanpham.php?cat=quanao" class="cat-item <?= $cat == 'quanao' ? 'active' : '' ?>">
+            <a href="sanpham.php?cat=ao" class="cat-item <?= $cat == 'quanao' ? 'active' : '' ?>">
                 <i class="fas fa-tshirt"></i> <span>QUẦN ÁO</span>
             </a>
             <a href="sanpham.php?cat=giay" class="cat-item <?= $cat == 'giay' ? 'active' : '' ?>">

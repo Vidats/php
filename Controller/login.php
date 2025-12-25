@@ -32,15 +32,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Lưu thêm user_name nếu các trang Admin cũ của bạn đang dùng biến này
             $_SESSION['user_name'] = $user['full_name']; 
 
-            // 4. PHÂN QUYỀN ĐIỀU HƯỚNG
-            if ($user['role'] == 1) {
-                // Nếu là Admin, vào trang quản trị
-                header("Location: ../Admin/index.php"); 
-            } else {
-                // Nếu là khách hàng, vào trang chủ người dùng
-                header("Location: ../View/index.php"); 
-            }
-            exit();
+           // 4. PHÂN QUYỀN ĐIỀU HƯỚNG CẬP NHẬT
+if ($user['role'] == 1 || $user['role'] == 2) {
+    // Nếu là Admin (1) HOẶC Nhân viên (2), cho vào trang quản trị
+    header("Location: ../Admin/index.php"); 
+} else {
+    // Nếu là khách hàng (role = 0), vào trang chủ người dùng
+    header("Location: ../View/index.php"); 
+}
+exit();
 
         } else {
             header("Location: ../View/form.php?tab=login&status=error&message=Mật khẩu không chính xác!");

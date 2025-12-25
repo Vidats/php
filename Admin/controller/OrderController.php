@@ -9,9 +9,9 @@ if (isset($_POST['update_status'])) {
     
     if (updateOrderStatusAdmin($conn, $order_id, $status)) {
         // Có thể thêm session flash message thông báo thành công ở đây
-        header("Location: ../View/manage_orders.php?status=success");
+        header("Location: ../View/quanlydonhang.php?status=success");
     } else {
-        header("Location: ../View/manage_orders.php?status=error");
+        header("Location: ../View/quanlydonhang.php?status=error");
     }
     exit();
 }
